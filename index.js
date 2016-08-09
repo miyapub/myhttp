@@ -1,7 +1,6 @@
 var http = require('http');
 var url = require("url");
 fs = require('fs');
-
 var getDirFromExtName=function(extDir,extName){
     //通过扩展名获得dir
     var dir='';
@@ -82,25 +81,16 @@ Myhttp={
             hasExtName=true;//有扩展名，作为资源路径
             extName=lastPath.split('.')[lastPath.split('.').length-1];
             //通过extName获得　ｄｉｒ和路径
-
             fileDir=getDirFromExtName(_self.extDir,extName);//得到　扩展名的ｄｉｒ
             if(fileDir===''){
                 err=true;
                 errMsg='资源文件类型未设置'
             }
-            //
         }
-
-
         if(hasExtName){
             type='resource';//类型作为资源
         }
-
-
-
         //获得文件　path　
-        
-
         switch(type){
             case 'router' :
             //路由，根据路由输出　html
@@ -129,27 +119,29 @@ Myhttp={
                     case 'js':
                         header.text={'Content-Type': 'text/javascript;charset=utf-8'};
                     break;
-                    case 'css':
-                        header.text={'Content-Type': 'text/css;charset=utf-8'};
+                    case 'pdf':
+                        header.text={'Content-Type': 'application/pdf;charset=utf-8'};
+                    break;
+                    case 'pdf':
+                        header.text={'Content-Type': 'application/pdf;charset=utf-8'};
+                    break;
+                    case 'zip':
+                        header.text={'Content-Type': 'application/zip;charset=utf-8'};
+                    break;
+                    case 'ppt':
+                        header.text={'Content-Type': 'application/x-ppt;charset=utf-8'};
                     break;
                 }
-                
             break;
         }
-
-        
-
         if(err){
             //输出　errMsg
             outERR(errCode,errMsg,res);
             return false;
         }   
-
         //filePath
         print(filePath,header,res);
-        
     }).listen(process.env.PORT || port, null);
-        //
         return this;
     }
 }
