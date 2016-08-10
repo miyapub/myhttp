@@ -1,6 +1,7 @@
 var http = require('http');
 var url = require("url");
-fs = require('fs');
+var fs = require('fs');
+var getHeaderByExtName= require('./getHeaderByExtName');
 var getDirFromExtName=function(extDir,extName){
     //通过扩展名获得dir
     var dir='';
@@ -31,7 +32,7 @@ var print=function(file,header,res){
     fs.readFile(file, function(err, data){
         if(err){
             header.code=500;
-            outERR(header.code,'open file err',res);
+            outERR(header.code,'open file err:'+file,res);
         }else{
             res.writeHead(header.code,header.text);
             res.write(data);
@@ -106,32 +107,7 @@ Myhttp={
             case 'resource' :
                 //资源，根据资源的扩展名，输出资源
                 filePath=fileDir+pathname;
-                switch(extName){
-                    case 'png':
-                        header.text={'Content-Type': 'image/x-png;charset=utf-8'};
-                    break;
-                    case 'jpg':
-                        header.text={'Content-Type': 'image/jpeg;charset=utf-8'};
-                    break;
-                    case 'gif':
-                        header.text={'Content-Type': 'image/gif;charset=utf-8'};
-                    break;
-                    case 'js':
-                        header.text={'Content-Type': 'text/javascript;charset=utf-8'};
-                    break;
-                    case 'pdf':
-                        header.text={'Content-Type': 'application/pdf;charset=utf-8'};
-                    break;
-                    case 'pdf':
-                        header.text={'Content-Type': 'application/pdf;charset=utf-8'};
-                    break;
-                    case 'zip':
-                        header.text={'Content-Type': 'application/zip;charset=utf-8'};
-                    break;
-                    case 'ppt':
-                        header.text={'Content-Type': 'application/x-ppt;charset=utf-8'};
-                    break;
-                }
+                header.text=getHeaderByExtName(extName);
             break;
         }
         if(err){
